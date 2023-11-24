@@ -1,4 +1,7 @@
 import express from 'express';
+
+import UserRoutes from './routes/userRoutes.js'
+
 import {connectToDatabase} from './database/db.js'
 import {connectToProjectDatabase} from './database/projectdb.js'
 import session from 'express-session';
@@ -43,6 +46,8 @@ async function startServer() {
   startServer();
 
   app.use('/api/auth', authenticateJWT);
+
+  app.use('/api', UserRoutes);
 
 app.get('/', (req, res) => {
   res.json({
