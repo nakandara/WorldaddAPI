@@ -2,28 +2,10 @@ import express from 'express';
 import {connectToDatabase} from './database/db.js'
 import {connectToProjectDatabase} from './database/projectdb.js'
 import cors from 'cors';
-import { authenticateJWT } from './common/passport.js'
-import { OAuth2Client } from 'google-auth-library';
-import session from 'express-session';
-
-const googleClientId = "327746728050-s21vp9i9uu5674us70o91cj6qqggs0ib.apps.googleusercontent.com";
-const googleClientSecret = "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";
-const googleRedirectUri = 'http://localhost:8080/auth/google/callback';
-
-const googleOAuth2Client = new OAuth2Client(googleClientId, googleClientSecret, googleRedirectUri);
-
 
 
 const app = express();
 app.use(cors());
-
-app.use(
-  session({
-      secret:`${process.env.JWT_SECRET}`, 
-      resave: false,
-      saveUninitialized: false
-  })
-);
 app.use(express.json());
 async function startServer() {
   try {
@@ -41,7 +23,7 @@ async function startServer() {
 
 startServer();
 
-app.use('/api/auth', authenticateJWT);
+
 
 app.get('/', (req, res) => {
   res.json({
