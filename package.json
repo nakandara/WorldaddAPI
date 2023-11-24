@@ -2,9 +2,10 @@
   "name": "worldaddapi",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "nodemon src/app.js"
+    "start": "nodemon src/index.js",
+    "vercel-build":"echo hello"
   },
   "keywords": [],
   "author": "",
