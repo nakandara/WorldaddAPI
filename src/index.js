@@ -1,8 +1,9 @@
-const app = require('./app');
+// Importing the 'app' from the ES6 module file './app.js'
+import app from './app.js';
 
 const port = process.env.PORT || 5000;
+
+// Using ES6 arrow function to start the server and log a message
 app.listen(port, () => {
-  /* eslint-disable no-console */
   console.log(`Listening: http://localhost:${port}`);
-  /* eslint-enable no-console */
 });
