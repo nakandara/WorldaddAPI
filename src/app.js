@@ -1,4 +1,13 @@
 import express from 'express';
+
+import exampleRoutes from './routes/exampleRoutes.js';
+import genderRoutes from './routes/genderRoutes.js'
+import newsRoutes from './routes/newsRoutes.js'
+import UserRoutes from './routes/userRoutes.js'
+import profilePhotoRoutes from './routes/profilePhotoRoutes.js'
+import profileRoutes from './routes/profileRoutes.js'
+import postRoutes from './routes/postRoutes.js'
+
 import {connectToDatabase} from './database/db.js'
 import {connectToProjectDatabase} from './database/projectdb.js'
 import session from 'express-session';
@@ -41,6 +50,18 @@ async function startServer() {
   }
   
   startServer();
+
+  app.use('/api/auth', authenticateJWT);
+
+  app.use('/api', exampleRoutes);
+  app.use('/api', genderRoutes);
+  app.use('/api', newsRoutes)
+  app.use('/api', UserRoutes);
+  app.use('/api', profileRoutes);
+  app.use('/api', profilePhotoRoutes);
+  app.use('/api', postRoutes);
+  
+
 
 app.get('/', (req, res) => {
   res.json({
