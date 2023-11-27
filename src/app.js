@@ -3,7 +3,7 @@ import express from 'express';
 import exampleRoutes from './routes/exampleRoutes.js';
 import UserRoutes from './routes/userRoutes.js'
 import genderRoutes from './routes/genderRoutes.js'
-import postRoutes from './routes/postRoutes.js'
+
 
 
 import {connectToDatabase} from './database/db.js'
@@ -54,7 +54,7 @@ async function startServer() {
   app.use('/api', UserRoutes);
   app.use('/api', exampleRoutes);
   app.use('/api', genderRoutes);
-  app.use('/api', postRoutes);
+
 
 app.get('/', (req, res) => {
   res.json({
