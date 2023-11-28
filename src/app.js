@@ -3,6 +3,7 @@ import express from 'express';
 import exampleRoutes from './routes/exampleRoutes.js';
 import UserRoutes from './routes/userRoutes.js'
 import genderRoutes from './routes/genderRoutes.js'
+import profilePhotoRoutes from './routes/profilePhotoRoutes.js'
 
 
 
@@ -35,12 +36,11 @@ app.use(express.json());
 
 async function startServer() {
     try {
-      // Connect to the database
+    
       await connectToDatabase();
       await connectToProjectDatabase();
   
-      // Start your server or perform other initialization tasks
-      // ...
+     
     } catch (err) {
       console.error('Error starting the server', err);
       process.exit(1); // Exit the application on error
@@ -54,6 +54,7 @@ async function startServer() {
   app.use('/api', UserRoutes);
   app.use('/api', exampleRoutes);
   app.use('/api', genderRoutes);
+  app.use('/api', profilePhotoRoutes);
 
 
 app.get('/', (req, res) => {
