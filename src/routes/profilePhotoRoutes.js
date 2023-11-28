@@ -1,5 +1,5 @@
 import express from 'express';
-import upload from '../upload.js'
+
 import {createProfilePhoto,getProfilePhoto} from '../controllers/profilePhotoController.js';
 
 const router = express.Router();
