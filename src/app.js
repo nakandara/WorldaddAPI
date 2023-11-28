@@ -21,6 +21,8 @@ const googleRedirectUri = 'http://localhost:8080/auth/google/callback';
 const googleOAuth2Client = new OAuth2Client(googleClientId, googleClientSecret, googleRedirectUri);
 
 const app = express();
+app.use(express.json({ limit: '10mb' })); // Set the limit as required
+app.use(express.json({ limit: '10mb' })); // Set the limit as required
 app.use(cors());
 app.use(
     session({
@@ -30,7 +32,7 @@ app.use(
     })
   );
 
-app.use(express.json());
+
 
 
 
