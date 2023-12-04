@@ -27,36 +27,26 @@ export const getProfilePhoto = async (req, res) => {
 }
 };
 
-  // export const editProfilePhoto = async (req, res) => {
-  //   const { userId } = req.params;
-   
-  //   try {
-     
-  //     const existingProfilePhoto = await ProfilePhoto.findOne({ userId });
-     
-  
-  //     if (!existingProfilePhoto) {
-  //       return res.status(404).json({ success: false, message: 'Profile photo not found' });
-  //     }
-  
-   
-  //     if (req.files.image) {
-  //       const newImage = req.files.image[0].filename;
-  //       existingProfilePhoto.image = newImage;
-  //     }
-  
-     
-  //     await existingProfilePhoto.save();
-  
-    
-  //     res.status(200).json({ success: true, message: 'Profile photo updated successfully' });
-  //   } catch (error) {
-  //     res.status(500).json({ success: false, error: error.message });
-  //   }
-  // };
-  
-  
-  
+
+
+
+
+
+export const editProfilePhoto = async (req, res) => {
+  const { userId } = req.params;
+  const updateData = req.body; // This should contain the updated data for the profile photo
+
+  try {
+    const updatedPhoto = await ProfilePhoto.findOneAndUpdate({ userId }, updateData, { new: true });
+    if (updatedPhoto) {
+      res.status(200).json({ msg: "Profile photo updated successfully", updatedPhoto });
+    } else {
+      res.status(404).json({ msg: "Profile photo not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
   
 
   
