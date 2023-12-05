@@ -4,7 +4,7 @@ import exampleRoutes from './routes/exampleRoutes.js';
 import UserRoutes from './routes/userRoutes.js'
 import genderRoutes from './routes/genderRoutes.js'
 import profilePhotoRoutes from './routes/profilePhotoRoutes.js'
-
+import profileRoutes from './routes/profileRoutes.js'
 
 
 import {connectToDatabase} from './database/db.js'
@@ -57,6 +57,11 @@ async function startServer() {
   app.use('/api', exampleRoutes);
   app.use('/api', genderRoutes);
   app.use('/api', profilePhotoRoutes);
+  app.use('/api', profileRoutes);
+
+
+
+
 
 
 app.get('/', (req, res) => {
