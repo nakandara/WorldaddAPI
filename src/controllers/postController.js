@@ -20,23 +20,15 @@ export const createPost = async (req, res) => {
 export const getPosts = async (req, res) => {
     const { userId } = req.params;
   
-    try {
-      const allPosts = await Post.find({ userId });
-  
-      if (!allPosts || allPosts.length === 0) {
-        return res.status(404).json({ success: false, message: "Posts not found" });
-      }
-  
-      // Map all posts to construct image URLs
-      const postsWithUrls = allPosts.map(post => ({
-        PostImageUrl: `${req.protocol}://${req.get("host")}/uploads/${post.image}`,
-        PostDetails: post
-      }));
-  
-      res.status(200).json({ success: true, allPosts: postsWithUrls });
-    } catch (error) {
-      res.status(500).json({ success: false, error: error.message });
-    }
+  try{
+    Post.find({userId}).then(data => {
+        res.json(data)
+    }).catch(error => {
+        res.status(408).json({ error })
+    })
+}catch(error){
+    res.json({error})
+}
   };
 
   export const getPost = async (req, res) => {
