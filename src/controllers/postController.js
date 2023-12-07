@@ -1,16 +1,13 @@
 import Post from "../models/postModel.js";
 
 export const createPost = async (req, res) => {
-  const { userId, description, category } = req.body;
-  if (!req.files.image) {
-    return res.status(400).json({ message: " image is required" });
-  }
+  const body = req.body;
+  
 
-  const image = req.files.image[0].filename;
-
-  const postDB = new Post({ image, userId, description, category });
+  console.log(body);
 
   try {
+    const postDB = new Post(body);
     await postDB.save();
     res
       .status(200)

@@ -5,7 +5,7 @@ import UserRoutes from './routes/userRoutes.js'
 import genderRoutes from './routes/genderRoutes.js'
 import profilePhotoRoutes from './routes/profilePhotoRoutes.js'
 import profileRoutes from './routes/profileRoutes.js'
-
+import postRoutes from './routes/postRoutes.js'
 
 import {connectToDatabase} from './database/db.js'
 import {connectToProjectDatabase} from './database/projectdb.js'
@@ -58,6 +58,7 @@ async function startServer() {
   app.use('/api', genderRoutes);
   app.use('/api', profilePhotoRoutes);
   app.use('/api', profileRoutes);
+  app.use('/api', postRoutes);
 
 
 

@@ -3,6 +3,8 @@ import ProfilePhoto from '../models/profilePhoto.js';
 export const createProfilePhoto = async (req, res) => {
  
   const body = req.body;
+
+  console.log(body);
     try{
         const newImage = await ProfilePhoto.create(body)
         newImage.save();
