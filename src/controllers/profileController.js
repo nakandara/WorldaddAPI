@@ -9,17 +9,18 @@ dotenv.config();
 
 
 export const createProfile = async (req, res) => {
+    console.log('3333333333333');
     const { userId, username,
         birthday,
         gender,
         religion,
         race,caste,district,city,marriageStatus,educationStatus,alcohol,JobStatus,monthlyIncome,brothers,sisters,height,weight,country,OtherDetails} = req.body;
    
-
+console.log(userId,'userId');
     try {
        
         const existingProfile = await User.findOne({ userId });
-     
+     console.log(existingProfile,'existingProfile');
         if (!existingProfile) {
             return res.status(500).json({ success: false, error: 'Not existing Profile' });
         }
@@ -64,7 +65,7 @@ export const updateProfile = async (req, res) => {
     
     try {
         const existingProfile = await Profile.findOne({ userId });
-
+console.log(existingProfile,'existingProfile');
         if (!existingProfile) {
             return res.status(404).json({ success: false, error: 'Profile not found' });
         }

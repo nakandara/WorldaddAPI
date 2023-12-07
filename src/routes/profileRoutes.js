@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/createProfile', createProfile);
 router.get('/getProfile/:userId', getProfile);
-router.post('/updateProfile',updateProfile);
+router.post('/updateProfile/:userId',updateProfile);
 //router.post('/createProfilePhoto', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]),updateProfile);
 
 
