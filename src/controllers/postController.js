@@ -32,10 +32,10 @@ export const getPosts = async (req, res) => {
   };
 
   export const getPost = async (req, res) => {
-    const { userId,postId} = req.params;
+    const { postId} = req.params;
   
     try {
-      const PostByID = await Post.find({ userId,postId });
+      const PostByID = await Post.find({ postId });
   
       if (!PostByID || PostByID.length === 0) {
         return res.status(404).json({ success: false, message: "Posts not found" });

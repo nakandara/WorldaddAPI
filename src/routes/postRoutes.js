@@ -5,7 +5,7 @@ import {createPost,getPosts,editPost,getPost,deletePost} from '../controllers/po
 const router = express.Router();
 router.post('/createPost',createPost);
 router.get('/getPosts/:userId', getPosts);
-router.get('/getPost/:userId/:postId', getPost);
+router.get('/getPost/:postId', getPost);
 router.post('/editPost/:userId/:postId',  editPost);
 router.post('/deletePost/:userId/:postId', deletePost);
 
