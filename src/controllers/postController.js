@@ -1,21 +1,33 @@
 import Post from "../models/postModel.js";
+import sharp from 'sharp'; // Import sharp for image processing
+import fs from 'fs'; // Import fs to read/write files
 
 export const createPost = async (req, res) => {
   const body = req.body;
-  
-
-  console.log(body);
 
   try {
+    // Process the image before saving
+    if (req.file) {
+      const imagePath = req.file.path; // Assuming you're using multer or similar for file upload
+      const optimizedImagePath = `uploads/${req.file.filename}_optimized.jpg`; // Define the path for the optimized image
+
+      // Resize and compress the image using sharp
+      await sharp(imagePath)
+        .jpeg({ quality: 70 }) // Adjust quality as needed
+        .resize({ width: 800 }) // Resize the image to a suitable width
+        .toFile(optimizedImagePath);
+
+      body.image = optimizedImagePath; // Set the image path to the optimized image
+    }
+
     const postDB = new Post(body);
     await postDB.save();
-    res
-      .status(200)
-      .json({ success: true, message: "Post created Successfully " });
+    res.status(200).json({ success: true, message: "Post created Successfully" });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 export const getPosts = async (req, res) => {
     const { userId } = req.params;
