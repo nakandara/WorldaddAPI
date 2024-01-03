@@ -3,7 +3,7 @@ import express from 'express';
 
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-
+import User from './models/userModel.js'
 
 import exampleRoutes from './routes/exampleRoutes.js';
 import UserRoutes from './routes/userRoutes.js'
@@ -25,13 +25,15 @@ import cors from 'cors';
 const app = express();
 app.use(express.json({ limit: '10mb' })); // Set the limit as required
 app.use(express.json({ limit: '10mb' })); // Set the limit as required
+const allowedOrigins = ['http://localhost:3000', 'https://aluthporuwa.vercel.app'];
+
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: allowedOrigins,
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })
-)
+);
 
 app.use(
   session({
@@ -48,12 +50,36 @@ passport.use(
     {
       clientID: '775938270547-r04ajoo56tpl8jt99fs7aa5757fgf0fq.apps.googleusercontent.com',
       clientSecret: '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',
-      callbackURL: 'http://localhost:8080/auth/google/callback' // Replace with your callback URL
+      callbackURL: 'http://localhost:8080/auth/google/callback',
+      scope: ['profile', 'email'], // Replace with your callback URL
     },
-    (accessToken, refreshToken, profile, done) => {
+    async (accessToken, refreshToken, profile, done) => {
       console.log(profile);
-      // You can handle the user profile or save user details to a database here
-      return done(null, profile);
+      try {
+        const email = profile._json.email;
+
+
+        if (!email) {
+          return done(new Error('Email not found in profile'), false);
+        }
+
+        // Check if the user exists in the database
+        let user = await User.findOne({ email });
+
+        if (!user) {
+          // If the user does not exist, create a new user in the database
+          user = await User.create({
+            name: profile.displayName,
+            email,
+            // Optionally, you can add more fields from the profile if needed
+          });
+        }
+
+        // Return the user object
+        return done(null, user);
+      } catch (error) {
+        return done(error, false);
+      }
     }
   )
 );
