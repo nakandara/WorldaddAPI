@@ -25,16 +25,7 @@ import cors from 'cors';
 const app = express();
 app.use(express.json({ limit: '10mb' })); // Set the limit as required
 app.use(express.json({ limit: '10mb' })); // Set the limit as required
-const allowedOrigins = ['http://localhost:3000', 'https://aluthporuwa.vercel.app'];
-
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true,
-  })
-);
-
+app.use(cors());
 app.use(
   session({
     secret: 'your-secret-key',
