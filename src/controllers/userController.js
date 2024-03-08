@@ -6,16 +6,25 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const registerUser = async (req, res) => {
-    const { name, email, password} = req.body;
-    console.log(name, email, password);
+    const { name, email, password, method } = req.body;
+
+    console.log(name, email, password, method, 'u77777777');
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(500).json({ success: false, error: 'existing User' });
-        }
-        const newUser = new User({
 
+        const existingUser = await User.findOne({ email });
+      
+        if (existingUser && method === 'FACEBOOK') {
+            console.log('User already exists for Facebook login');
+            const token = jwt.sign({ userId: existingUser?._id }, process.env.JWT_SECRET || '');
+            return res.json({ token, existingUser }); // Return or terminate here
+        } else if (existingUser) {
+            console.log('User with this email already exists');
+            return res.status(409).json({ success: false, error: 'User with this email already exists' });
+        }
+
+        // If user doesn't exist, create a new one
+        const newUser = new User({
             name,
             email,
             password: hashedPassword,
@@ -30,7 +39,6 @@ export const registerUser = async (req, res) => {
         console.error(error);
         res.status(500).json({ success: false, error: 'Something went wrong' });
     }
-
 };
 
 
