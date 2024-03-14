@@ -4,11 +4,13 @@ import express from 'express';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from './models/userModel.js'
+import handlePostRequests from "post-request-handler"
 
 import exampleRoutes from './routes/exampleRoutes.js';
 import UserRoutes from './routes/userRoutes.js'
 import genderRoutes from './routes/genderRoutes.js'
 import profilePhotoRoutes from './routes/profilePhotoRoutes.js'
+import contactRoutes from './routes/contactRoute.js'
 import profileRoutes from './routes/profileRoutes.js'
 import postRoutes from './routes/postRoutes.js'
 // import { passport, sessionMiddleware } from './common/passport-setup.js';
@@ -23,6 +25,8 @@ import cors from 'cors';
 
 
 const app = express();
+
+app.set('view engine', 'ejs');
 app.use(express.json({ limit: '10mb' })); // Set the limit as required
 app.use(express.json({ limit: '10mb' })); // Set the limit as required
 app.use(cors());
@@ -94,6 +98,7 @@ async function startServer() {
   
   startServer();
 
+  app.use(express.urlencoded({ extended: true }));
   app.use('/api/auth', authenticateJWT);
 
   app.use('/api', UserRoutes);
@@ -101,8 +106,10 @@ async function startServer() {
   app.use('/api', genderRoutes);
   app.use('/api', profilePhotoRoutes);
   app.use('/api', profileRoutes);
+  app.use('/api', contactRoutes);
   app.use('/api', postRoutes);
   app.use('/auth',authRoute)
+  
 
 
 

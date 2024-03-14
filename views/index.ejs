@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+            }
+
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            form {
+                display: flex;
+                flex-direction: column;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            input[type='password'] {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+
+            input[type='submit'] {
+                background-color: #4caf50;
+                color: white;
+                padding: 10px;
+                border: none;
+                cursor: pointer;
+            }
+        </style>
+        <script>
+            var status = '<%- JSON.stringify(status) %>';
+
+            if (JSON.parse(status) == 'verified') {
+                if (confirm('Do you want to login?')) {
+                   
+                    var websiteUrl = '<%= process.env.WEBSITE_URL %>';
+                    window.location.href = websiteUrl + '/sign-in';
+                }
+            }
+
+            window.onload = function () {
+                const passwordInput = document.getElementById('password');
+                const confirmPasswordInput = document.getElementById('confirm-password');
+                const submitButton = document.querySelector("input[type='submit']");
+
+                submitButton.addEventListener('click', function (event) {
+                    if (passwordInput.value !== confirmPasswordInput.value) {
+                        event.preventDefault(); 
+                        alert('Passwords do not match. Please try again.');
+                    }
+                });
+            };
+        </script>
+    </head>
+    <body>
+        <h1><%= email %></h1>
+        <form action="" method="post">
+            <input type="password" name="password" id="password" placeholder="Password" />
+            <br />
+            <input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password" />
+            <br />
+            <input type="submit" value="Submit" />
+        </form>
+    </body>
+</html>
