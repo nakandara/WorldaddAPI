@@ -8,15 +8,17 @@ dotenv.config();
 
 export const createContact = async (req, res) => {
     const { userId, name, email, message } = req.body;
+    console.log(userId, name, email, message);
 
     try {
-        // Validate the input data (you can add more validation as needed)
+      
         if (!userId || !name || !email || !message) {
             return res.status(400).json({ success: false, error: 'Missing required fields' });
         }
 
-        // Check if the user exists (you might have a different logic for this)
-        const user = await User.findById(userId);
+     
+        const user = await User.findOne({ userId });
+        console.log(user,'..........');
         if (!user) {
             return res.status(404).json({ success: false, error: 'User not found' });
         }

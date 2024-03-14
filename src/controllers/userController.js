@@ -19,6 +19,7 @@ const transporter = nodemailer.createTransport({
 export const registerUser = async (req, res) => {
     const { name, email, password, method } = req.body;
 
+    console.log(name, email, password, method);
    
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -38,6 +39,7 @@ export const registerUser = async (req, res) => {
             name,
             email,
             password: hashedPassword,
+            method
         });
 
         await newUser.save();
@@ -53,7 +55,7 @@ export const registerUser = async (req, res) => {
 
 
 export const loginUser = async (req, res) => {
-    const { email, password } = req.body;
+    const {name, email, password } = req.body;
 
     try {
         const user = await User.findOne({ email });
