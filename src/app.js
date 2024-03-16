@@ -4,8 +4,10 @@ import express from 'express';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from './models/userModel.js'
-import handlePostRequests from "post-request-handler"
+//import handlePostRequests from "post-request-handler"
+import AWS from 'aws-sdk'
 
+import fs from 'fs'
 import exampleRoutes from './routes/exampleRoutes.js';
 import UserRoutes from './routes/userRoutes.js'
 import genderRoutes from './routes/genderRoutes.js'
@@ -19,12 +21,47 @@ import {connectToDatabase} from './database/db.js'
 import {connectToProjectDatabase} from './database/projectdb.js'
 import session from 'express-session';
 import { authenticateJWT } from './common/passport.js'
-
 import cors from 'cors';
+import multer  from 'multer';
+import dotenv from 'dotenv';
 
+dotenv.config();
+
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
+  region: 'us-east-1', // replace 'your-region' with your bucket's region
+});
+
+
+const s3 = new AWS.S3();
+
+
+function uploadImageToS3(bucketName, file) {
+  const params = {
+    Bucket: "world-api-demo",
+    Key: file.originalname,
+    Body: fs.createReadStream(file.path),
+    ContentType: file.mimetype,
+  
+  };
+
+  return new Promise((resolve, reject) => {
+    s3.upload(params, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data.Location);
+      }
+    });
+  });
+}
 
 
 const app = express();
+
+const upload = multer({ dest: 'uploads/' });
 
 app.set('view engine', 'ejs');
 app.use(express.json({ limit: '10mb' })); // Set the limit as required
@@ -39,6 +76,18 @@ app.use(
 );
 
 
+app.post('/upload', upload.single('image'), async (req, res) => {
+  console.log('AWS Configurationggggggggggggggg:', AWS.config);
+  try {
+    const imageUrl = await uploadImageToS3('your-bucket-name', req.file);
+    res.send(imageUrl);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error uploading image to S3');
+  }
+});
+// const url = "http://localhost:9090/api/event/create";
+// app.use(handlePostRequests(url))
 
 passport.use(
   new GoogleStrategy(
@@ -58,7 +107,6 @@ passport.use(
           return done(new Error('Email not found in profile'), false);
         }
 
-        
         // Check if the user exists in the database
         let user = await User.findOne({ email });
 
@@ -84,6 +132,7 @@ passport.use(
 
 
 
+
 async function startServer() {
     try {
     
@@ -101,7 +150,6 @@ async function startServer() {
 
   app.use(express.urlencoded({ extended: true }));
   app.use('/api/auth', authenticateJWT);
-
   app.use('/api', UserRoutes);
   app.use('/api', exampleRoutes);
   app.use('/api', genderRoutes);
