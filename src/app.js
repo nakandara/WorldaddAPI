@@ -58,6 +58,7 @@ passport.use(
           return done(new Error('Email not found in profile'), false);
         }
 
+        
         // Check if the user exists in the database
         let user = await User.findOne({ email });
 
