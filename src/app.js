@@ -21,7 +21,8 @@ import session from 'express-session';
 import { authenticateJWT } from './common/passport.js'
 import multer  from 'multer';
 import cors from 'cors';
-
+import AWS from 'aws-sdk'
+import fs from 'fs'
 
 
 const app = express();
