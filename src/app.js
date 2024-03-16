@@ -19,7 +19,7 @@ import {connectToDatabase} from './database/db.js'
 import {connectToProjectDatabase} from './database/projectdb.js'
 import session from 'express-session';
 import { authenticateJWT } from './common/passport.js'
-
+import multer  from 'multer';
 import cors from 'cors';
 
 
