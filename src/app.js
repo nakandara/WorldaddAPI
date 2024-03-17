@@ -27,6 +27,38 @@ import fs from 'fs'
 
 const app = express();
 
+const upload = multer({ dest: 'uploads/' });
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
+  region: 'us-east-1', // replace 'your-region' with your bucket's region
+});
+
+
+const s3 = new AWS.S3();
+
+
+function uploadImageToS3(bucketName, file) {
+  const params = {
+    Bucket: "world-api-demo",
+    Key: file.originalname,
+    Body: fs.createReadStream(file.path),
+    ContentType: file.mimetype,
+  
+  };
+
+  return new Promise((resolve, reject) => {
+    s3.upload(params, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data.Location);
+      }
+    });
+  });
+}
+
 app.set('view engine', 'ejs');
 app.use(express.json({ limit: '10mb' })); // Set the limit as required
 app.use(express.json({ limit: '10mb' })); // Set the limit as required
@@ -99,7 +131,16 @@ async function startServer() {
   }
   
   startServer();
-
+  app.post('/upload', upload.single('image'), async (req, res) => {
+    console.log('AWS Configurationggggggggggggggg:', AWS.config);
+    try {
+      const imageUrl = await uploadImageToS3('your-bucket-name', req.file);
+      res.send(imageUrl);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error uploading image to S3');
+    }
+  });
   app.use(express.urlencoded({ extended: true }));
   app.use('/api/auth', authenticateJWT);
 
