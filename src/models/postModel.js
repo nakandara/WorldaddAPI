@@ -10,9 +10,10 @@ const postSchema = new mongoose.Schema({
         required: true,
         unique: true,
       },
-    image: [{ type: String, required: true }],
+    image: { type: String, required: true },
     description: { type: String, required: true},
     category: [{ type: String, required: true }],
+    socialIcon:[{ type: String, required: true }]
   
 });
 
