@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  token: { type: String, required: false } // New field to store token
 });
 
 const User = mongoose.model("User", UserSchema);
