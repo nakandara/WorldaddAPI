@@ -1,19 +1,16 @@
-
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const  connectToProjectDatabase = async() =>{
+const mongoUrl = process.env.MONGODG_URI_PROJECTDB;
+
+export const connectToProjectDatabase = async () => {
   try {
-    await mongoose.connect(process.env.MONGODG_URI_PROJECTDB, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('Connected to MongoProjectDB Atlas');
+    await mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('Connected to database!');
   } catch (err) {
-    console.error('Error connecting to MongoDB Atlas', err);
+    console.error('Error connecting to MongoDB', err);
     process.exit(1);
   }
-}
-
+};

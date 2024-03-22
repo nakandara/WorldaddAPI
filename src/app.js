@@ -141,6 +141,11 @@ async function startServer() {
       res.status(500).send('Error uploading image to S3');
     }
   });
+
+
+  // const post_route = "http://localhost:2020/api/event/create"
+  // app.use(handlePostRequests(post_route,{ accept_route: "http://localhost:8080"}))
+
   app.use(express.urlencoded({ extended: true }));
   app.use('/api/auth', authenticateJWT);
 
