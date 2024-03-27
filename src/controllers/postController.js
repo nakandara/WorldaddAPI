@@ -95,9 +95,7 @@ export const getPost = async (req, res) => {
 
     // Map all posts to construct image URLs
     const postWithUrls = PostByID.map((post) => ({
-      PostImageUrl: `${req.protocol}://${req.get("host")}/uploads/${
-        post.image
-      }`,
+      PostImageUrl: post.image,
       PostDetails: post,
     }));
 
