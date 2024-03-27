@@ -39,7 +39,9 @@ const opts = {
 
 // Middleware for authenticating JWT token
 async function authenticateJWT(req, res, next) {
-    let token = req.headers.authorization?.split(' ')[1];
+    // let token = req.headers.authorization?.split(' ')[1];
+    let token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+
 
     if (token) {
         try {
