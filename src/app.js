@@ -6,16 +6,16 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from './models/userModel.js'
 import handlePostRequests from "post-request-handler"
 
-import exampleRoutes from './routes/exampleRoutes.js';
+// import exampleRoutes from './routes/exampleRoutes.js';
 import UserRoutes from './routes/userRoutes.js'
-import genderRoutes from './routes/genderRoutes.js'
+// import genderRoutes from './routes/genderRoutes.js'
 import profilePhotoRoutes from './routes/profilePhotoRoutes.js'
 import contactRoutes from './routes/contactRoute.js'
 import profileRoutes from './routes/profileRoutes.js'
 import postRoutes from './routes/postRoutes.js'
 // import { passport, sessionMiddleware } from './common/passport-setup.js';
 import authRoute from './routes/authRoute.js'
-import {connectToDatabase} from './database/db.js'
+// import {connectToDatabase} from './database/db.js'
 import {connectToProjectDatabase} from './database/projectdb.js'
 import session from 'express-session';
 import { authenticateJWT } from './common/passport.js'
@@ -120,7 +120,7 @@ passport.use(
 async function startServer() {
     try {
     
-      await connectToDatabase();
+      // await connectToDatabase();
       await connectToProjectDatabase();
   
      
@@ -150,8 +150,8 @@ async function startServer() {
   app.use('/api/auth', authenticateJWT);
 
   app.use('/api', UserRoutes);
-  app.use('/api', exampleRoutes);
-  app.use('/api', genderRoutes);
+  // app.use('/api', exampleRoutes);
+  // app.use('/api', genderRoutes);
   app.use('/api', profilePhotoRoutes);
   app.use('/api', profileRoutes);
   app.use('/api', contactRoutes);

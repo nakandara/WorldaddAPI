@@ -1,9 +1,9 @@
-import express from 'express';
-import { getExample, postExample } from '../controllers/exampleController.js';
+// import express from 'express';
+// import { getExample, postExample } from '../controllers/exampleController.js';
 
-const router = express.Router();
+// const router = express.Router();
 
-router.get('/users', getExample);
-router.post('/', postExample);
+// router.get('/users', getExample);
+// router.post('/', postExample);
 
-export default router;
+// export default router;

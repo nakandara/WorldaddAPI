@@ -5,25 +5,13 @@ dotenv.config();
 
 const uri = process.env.MONGODG_URI_USERDB;
 
-if (!uri) {
-  console.error('MongoDB connection string is not defined.');
-  process.exit(1); // Exit the application if the connection string is not defined
-}
-
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-let database;
-
-export async function connectToDatabase() {
+export const connectToProjectDatabase = async () => {
   try {
-    await client.connect();
-    console.log('Connected to MongoUserDB Atlas');
-    database = client.db('test');
+    await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('Connected to database!');
   } catch (err) {
-    console.error('Error connecting to MongoDB User Atlas', err);
+    console.error('Error connecting to MongoDB', err);
+    process.exit(1);
   }
-}
+};
 
-export function getDatabase() {
-  return database;
-}

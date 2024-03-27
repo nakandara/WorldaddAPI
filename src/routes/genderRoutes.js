@@ -1,8 +1,8 @@
-import express from 'express';
-import { createGender } from '../controllers/genderController.js';
+// import express from 'express';
+// import { createGender } from '../controllers/genderController.js';
 
-const router = express.Router();
+// const router = express.Router();
 
-router.post('/createGender', createGender);
+// router.post('/createGender', createGender);
 
-export default router;
+// export default router;
