@@ -3,8 +3,13 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
 const uri = process.env.MONGODG_URI_USERDB;
+
+if (!uri) {
+  console.error('MongoDB connection string is not defined.');
+  process.exit(1); // Exit the application if the connection string is not defined
+}
+
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let database;
