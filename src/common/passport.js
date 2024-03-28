@@ -13,8 +13,10 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json({ strict: false }));
 
-const secretKey = process.env.JWT_SECRET || '';
+const secretKey = process.env.JWT_SECRET || 'my_secret_key';
 
+
+console.log(secretKey,'secretKeysecretKey');
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -42,7 +44,7 @@ async function authenticateJWT(req, res, next) {
     // let token = req.headers.authorization?.split(' ')[1];
     let token = req.headers.authorization && req.headers.authorization.split(' ')[1];
 
-
+    console.log(secretKey,'secretKeysecretKey');
     if (token) {
         try {
             const decodedToken= jwt.verify(token, secretKey);
