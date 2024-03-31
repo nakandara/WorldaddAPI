@@ -9,7 +9,7 @@ export const connectToProjectDatabase = async () => {
   try {
 
     await mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log('Connected to database!');
+    console.log('Connected to database!'); 
   } catch (err) {
     
     console.error('Error connecting to MongoDB', err);
