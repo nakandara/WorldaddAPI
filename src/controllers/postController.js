@@ -87,6 +87,7 @@ export const getPost = async (req, res) => {
   try {
     const PostByID = await Post.find({ postId });
 
+    
     if (!PostByID || PostByID.length === 0) {
       return res
         .status(404)
