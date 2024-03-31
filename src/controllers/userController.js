@@ -46,6 +46,7 @@ export const registerUser = async (req, res) => {
       method,
       token: "", // Initialize token field
     });
+    
 
     // Generate token
     const token = jwt.sign(
