@@ -149,7 +149,7 @@ async function startServer() {
   app.use(express.urlencoded({ extended: true }));
   app.use('/api/auth', authenticateJWT);
 
-  
+
   app.use('/api', UserRoutes);
   // app.use('/api', exampleRoutes);
   // app.use('/api', genderRoutes);
@@ -160,6 +160,7 @@ async function startServer() {
   app.use('/auth',authRoute)
   
 
+  
 
 app.get('/', (req, res) => {
   res.json({
