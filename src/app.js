@@ -154,13 +154,14 @@ async function startServer() {
   // app.use('/api', exampleRoutes);
   // app.use('/api', genderRoutes);
   app.use('/api', profilePhotoRoutes);
+  
   app.use('/api', profileRoutes);
   app.use('/api', contactRoutes);
   app.use('/api', postRoutes);
   app.use('/auth',authRoute)
   
 
-  
+
 
 app.get('/', (req, res) => {
   res.json({
