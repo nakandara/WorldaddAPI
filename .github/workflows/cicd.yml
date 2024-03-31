@@ -1,4 +1,3 @@
-
 name: Deploy Node Application
 
 on: 
@@ -28,4 +27,4 @@ jobs:
       - name: Delete old container
         run: docker rm -f nodejs-app-container  
       - name: Run Docker Container
-        run: docker run -d -p 4000:4000 --name nodejs-app-container -e MONGODG_URI_PROJECTDB='${{ secrets.MONGODG_URI_PROJECTDB }}' MONGODG_URI_USERDB='${{ secrets.MONGODG_URI_USERDB }}' nakandara/poruwa_backend
+        run: docker run -d -p 4000:4000 --name nodejs-app-container -e MONGODG_URI_PROJECTDB='${{ secrets.MONGODG_URI_PROJECTDB }}' -e MONGODG_URI_USERDB='${{ secrets.MONGODG_URI_USERDB }}' nakandara/poruwa_backend
