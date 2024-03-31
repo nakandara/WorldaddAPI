@@ -12,6 +12,7 @@ export const createContact = async (req, res) => {
 
     try {
       
+        
         if (!userId || !name || !email || !message) {
             return res.status(400).json({ success: false, error: 'Missing required fields' });
         }
