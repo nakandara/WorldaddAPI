@@ -38,10 +38,7 @@ AWS.config.update({
 });
 
 
-const key = fs.readFileSync('private.key')
 
-const cert = fs.readFileSync('certificate.crt')
- 
 
 
 const s3 = new AWS.S3();
@@ -169,25 +166,20 @@ async function startServer() {
   app.use('/auth',authRoute)
   
 
-  const cred = {
-    key,
-    cert
-
-  }
+ 
 
   // app.get('/.well-known/pki-validation/773A1B6C4B08F5F9DB41F81B003990E0.txt', (req, res) => {
   //    res.sendFile('/home/ubuntu/apiworldapp/_work/WorldaddAPI/WorldaddAPI/773A1B6C4B08F5F9DB41F81B003990E0.txt')
     
   // });
   
-  
+
 app.get('/', (req, res) => {
   res.json({
     message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
   });
 });
 
-const httpsServers =  https.createServer(cred,app)
-httpsServers.listen(8443)
+
 
 export default app;
