@@ -175,10 +175,10 @@ async function startServer() {
 
   }
 
-  app.get('/.well-known/pki-validation/773A1B6C4B08F5F9DB41F81B003990E0.txt', (req, res) => {
-     res.sendFile('/home/ubuntu/apiworldapp/_work/WorldaddAPI/WorldaddAPI/773A1B6C4B08F5F9DB41F81B003990E0.txt')
+  // app.get('/.well-known/pki-validation/773A1B6C4B08F5F9DB41F81B003990E0.txt', (req, res) => {
+  //    res.sendFile('/home/ubuntu/apiworldapp/_work/WorldaddAPI/WorldaddAPI/773A1B6C4B08F5F9DB41F81B003990E0.txt')
     
-  });
+  // });
   
 app.get('/', (req, res) => {
   res.json({
