@@ -4,9 +4,9 @@ import https from 'https'
 
 const port = process.env.PORT || 8080;
 
-const key = fs.readFileSync('private.key')
+const key = fs.readFileSync('./private.key')
 
-const cert = fs.readFileSync('certificate.crt')
+const cert = fs.readFileSync('./certificate.crt')
 
 const cred = {
   key,
