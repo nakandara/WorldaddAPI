@@ -6,6 +6,7 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from './models/userModel.js'
 import handlePostRequests from "post-request-handler"
 
+
 // import exampleRoutes from './routes/exampleRoutes.js';
 import UserRoutes from './routes/userRoutes.js'
 // import genderRoutes from './routes/genderRoutes.js'
@@ -34,6 +35,10 @@ AWS.config.update({
   secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY,
   region: 'us-east-1', // replace 'your-region' with your bucket's region
 });
+
+
+const filw = fs.readFileSync('./773A1B6C4B08F5F9DB41F81B003990E0.txt')
+ 
 
 
 const s3 = new AWS.S3();
@@ -161,7 +166,9 @@ async function startServer() {
   app.use('/auth',authRoute)
   
 
-
+app.get('/.well-known/pki-validation/773A1B6C4B08F5F9DB41F81B003990E0.txt'),(req,res)=>{
+  res.sendFile('/home/ubuntu/apiworldapp/_work/WorldaddAPI/WorldaddAPI/773A1B6C4B08F5F9DB41F81B003990E0.txt')
+} 
 
 app.get('/', (req, res) => {
   res.json({
