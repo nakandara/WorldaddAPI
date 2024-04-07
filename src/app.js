@@ -42,7 +42,7 @@ AWS.config.update({
 
 // const cert = fs.readFileSync('certificate.crt')
  
-// const file = fs.readFileSync('./55796A2D5FC169C2C49DA8AB7298E172.txt')
+ const file = fs.readFileSync('./55796A2D5FC169C2C49DA8AB7298E172.txt')
 
 const s3 = new AWS.S3();
 
@@ -175,10 +175,10 @@ async function startServer() {
 
   // }
 
-  // app.get('/.well-known/pki-validation/55796A2D5FC169C2C49DA8AB7298E172.txt', (req, res) => {
-  //    res.sendFile('/home/ubuntu/WorldaddAPI/55796A2D5FC169C2C49DA8AB7298E172.txt')
+  app.get('/.well-known/pki-validation/55796A2D5FC169C2C49DA8AB7298E172.txt', (req, res) => {
+     res.sendFile('/home/ubuntu/WorldaddAPI/55796A2D5FC169C2C49DA8AB7298E172.txt')
     
-  // });
+  });
 
  
   
