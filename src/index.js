@@ -4,9 +4,9 @@ import https from 'https'
 
 const port = process.env.PORT || 8080;
 
-const key = fs.readFileSync('./private.key')
+const key = fs.readFileSync('private.key')
 
-const cert = fs.readFileSync('./certificate.crt')
+const cert = fs.readFileSync('certificate.crt')
 
 const cred = {
   key,
@@ -19,5 +19,5 @@ app.listen(port, () => {
   console.log(`Listening: http://localhost:${port}`);
 });
 
-// const httpsServers =  https.createServer(cred,app)
-// httpsServers.listen(443)
+const httpsServer =  https.createServer(cred,app)
+httpsServer.listen(8443)
