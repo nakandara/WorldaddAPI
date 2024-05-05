@@ -24,24 +24,30 @@ function uploadImageToS3(bucketName, file) {
 
 export const createPost = async (req, res) => {
   try {
-    // Extracting data from form data
     const { userId, description, category } = req.body;
 
-    // Uploading image to S3
-    const imageUrl = await uploadImageToS3("world-api-demo", req.file);
-    
-    // Saving post to the database
+    const imageUrls = [];
+    const images = []; // Array to store image objects
+
+    // Assuming req.files is an array of image files
+    for (const file of req.files) {
+      const imageUrl = await uploadImageToS3("world-api-demo", file);
+      imageUrls.push(imageUrl);
+      images.push({ imageUrl }); // Push image object to images array
+    }
+
+    // Create a single Post object with all images
     const postDB = new Post({
       userId,
-      image: imageUrl,
+      images,
       description,
       category,
-      socialIcon:"heart"
+      socialIcon: ["heart"]
     });
     await postDB.save();
 
     // Sending response
-    res.status(200).json({ success: true, message: "Post created Successfully", body: postDB });
+    res.status(200).json({ success: true, message: "Post created Successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
@@ -107,28 +113,31 @@ export const getPost = async (req, res) => {
 };
 
 export const editPost = async (req, res) => {
-  const { userId, postId } = req.params;
-  const { image, description, category } = req.body;
-
   try {
-    // Find and update the post based on userId and postId
-    const updatedPost = await Post.findOneAndUpdate(
-      { userId, postId },
-      { image, description, category },
-      { new: true }
-    );
+    const postId = req.params.postId; // Assuming postId is passed in the URL parameters
+    const { description, category } = req.body;
 
-    if (!updatedPost) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Post not found" });
+    // Check if the post exists
+    const existingPost = await Post.findById(postId);
+    if (!existingPost) {
+      return res.status(404).json({ success: false, message: "Post not found" });
     }
 
-    res.status(200).json({ success: true, updatedPost });
+    // Update the post fields
+    existingPost.description = description;
+    existingPost.category = category;
+
+    // Save the updated post
+    const updatedPost = await existingPost.save();
+
+    // Sending response
+    res.status(200).json({ success: true, message: "Post updated successfully", body: updatedPost });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 export const deletePost = async (req, res) => {
   const { userId, postId } = req.params;
@@ -136,6 +145,7 @@ export const deletePost = async (req, res) => {
   try {
     // Find and delete the post based on userId and postId
     const deletedPost = await Post.findOneAndDelete({ userId, postId });
+    console.log(deletedPost);
 
     if (!deletedPost) {
       return res
