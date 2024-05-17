@@ -16,9 +16,15 @@ const postSchema = new mongoose.Schema({
     },
     images: [imageSchema], // Array of objects with imageUrl field
     description: { type: String, required: true },
+    title: { type: String, required: true },
+    city: { type: String, required: true },
+    mobileNumber: { type: String, required: true },
+    whatsappNumber: { type: String, required: true },
+    price: { type: String, required: true },
     category: [{ type: String, required: true }],
-    socialIcon: [{ type: String, required: true }]
-});
+    socialIcon: [{ type: String, required: true }],
+    verify: { type: Boolean, default: false } // Boolean field for verification status
+}, { timestamps: true }); // Add timestamps option
 
 const Post = mongoose.model("Post", postSchema);
 
