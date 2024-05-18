@@ -20,7 +20,7 @@ import authRoute from './routes/authRoute.js'
 import {connectToProjectDatabase} from './database/projectdb.js'
 import session from 'express-session';
 import { authenticateJWT } from './common/passport.js'
-import multer  from 'multer';
+
 import cors from 'cors';
 import AWS from 'aws-sdk'
 import fs from 'fs'
@@ -29,7 +29,6 @@ import https from 'https'
 
 const app = express();
 
-const upload = multer({ dest: 'uploads/' });
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -139,16 +138,7 @@ async function startServer() {
   }
   
   startServer();
-  app.post('/upload', upload.single('image'), async (req, res) => {
-    console.log('AWS Configurationggggggggggggggg:', AWS.config);
-    try {
-      const imageUrl = await uploadImageToS3('your-bucket-name', req.file);
-      res.send(imageUrl);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('Error uploading image to S3');
-    }
-  });
+ 
 
 
   // const post_route = "http://localhost:2020/api/event/create"
@@ -169,16 +159,7 @@ async function startServer() {
   app.use('/auth',authRoute)
   
 
-  // const cred = {
-  //   key,
-  //   cert
 
-  // }
-
-  app.get('/.well-known/pki-validation/55796A2D5FC169C2C49DA8AB7298E172.txt', (req, res) => {
-     res.sendFile('/home/ubuntu/WorldaddAPI/55796A2D5FC169C2C49DA8AB7298E172.txt')
-    
-  });
 
  
   
