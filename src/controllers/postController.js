@@ -1,10 +1,6 @@
 
 
 
-
-
-
-
 import Post from "../models/postModel.js";
 import AWS from "aws-sdk";
 import fs from "fs";
@@ -33,15 +29,10 @@ export const createPost = async (req, res) => {
   try {
     const { userId, description, category, city, mobileNumber, whatsappNumber, price, title, verify } = req.body;
 
-    const imageUrls = [];
-    const images = []; // Array to store image objects
-
-    // Assuming req.files is an array of image files
-    for (const file of req.files) {
-      const imageUrl = await uploadImageToS3("world-api-demo", file);
-      imageUrls.push(imageUrl);
-      images.push({ imageUrl }); // Push image object to images array
-    }
+    // Create an array of image objects
+    const images = req.files.map(file => ({
+      imageUrl: file.location
+    }));
 
     // Create a single Post object with all images
     const postDB = new Post({
@@ -51,12 +42,13 @@ export const createPost = async (req, res) => {
       mobileNumber,
       whatsappNumber,
       price,
-      images,
+      images, // Assign the array of images
       description,
       category,
       socialIcon: ["heart"],
       verify
     });
+
     await postDB.save();
 
     // Sending response
@@ -66,7 +58,6 @@ export const createPost = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
 
 export const getPosts = async (req, res) => {
   const { userId } = req.params;
