@@ -82,6 +82,7 @@ app.use('/auth', authRoute);
 
 
 
+
 app.get('/', (req, res) => {
   res.json({
     message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
