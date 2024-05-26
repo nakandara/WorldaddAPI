@@ -11,6 +11,7 @@ import profilePhotoRoutes from './routes/profilePhotoRoutes.js';
 import contactRoutes from './routes/contactRoute.js';
 import profileRoutes from './routes/profileRoutes.js';
 import postRoutes from './routes/postRoutes.js';
+import otpRouter from './routes/otpRouter.js';
 import authRoute from './routes/authRoute.js';
 import { connectToProjectDatabase } from './database/projectdb.js';
 import session from 'express-session';
@@ -78,6 +79,7 @@ app.use('/api', profilePhotoRoutes);
 app.use('/api', profileRoutes);
 app.use('/api', contactRoutes);
 app.use('/api', postRoutes);
+app.use('/api', otpRouter);
 app.use('/auth', authRoute);
 
 
