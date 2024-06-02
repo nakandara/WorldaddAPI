@@ -49,10 +49,10 @@ export const createPost = async (req, res) => {
       verify
     });
 
-    await postDB.save();
-
+    const savedPost = await postDB.save();
     // Sending response
-    res.status(200).json({ success: true, message: "Post created Successfully" });
+    res.status(200).json({ success: true, message: "Post created Successfully", post: savedPost });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
