@@ -16,6 +16,7 @@ const postSchema = new mongoose.Schema({
     },
     images: [imageSchema], // Array of objects with imageUrl field
     description: { type: String, required: false },
+    plane: { type: String, required: false },
     title: { type: String, required: false },
     city: { type: String, required: false },
     mobileNumber: { type: String, required: true },

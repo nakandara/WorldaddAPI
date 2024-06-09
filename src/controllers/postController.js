@@ -27,7 +27,7 @@ function uploadImageToS3(bucketName, file) {
 
 export const createPost = async (req, res) => {
   try {
-    const { userId, description, category, city, mobileNumber, whatsappNumber, price, title, verify } = req.body;
+    const { userId, description, category, city, mobileNumber, whatsappNumber, price, title, verify,plane } = req.body;
 
     // Create an array of image objects
     const images = req.files.map(file => ({
@@ -37,6 +37,7 @@ export const createPost = async (req, res) => {
     // Create a single Post object with all images
     const postDB = new Post({
       userId,
+      plane,
       city,
       title,
       mobileNumber,
@@ -138,7 +139,7 @@ export const getPost = async (req, res) => {
 export const editPost = async (req, res) => {
   try {
     const postId = req.params.postId; // Assuming postId is passed in the URL parameters
-    const { description, category,city,mobileNumber,whatsappNumber,price,title ,verify} = req.body;
+    const { description, category,city,mobileNumber,whatsappNumber,price,title ,verify,plane} = req.body;
     // Check if the post exists
    const existingPost = await Post.findOne({ postId });
     if (!existingPost) {
@@ -148,6 +149,7 @@ export const editPost = async (req, res) => {
     // Update the post fields
     existingPost.description = description;
     existingPost.category = category;
+    existingPost.plane = plane;
     existingPost.city = city;
     existingPost.mobileNumber = mobileNumber;
     existingPost.whatsappNumber = whatsappNumber;
