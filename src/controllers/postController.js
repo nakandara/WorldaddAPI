@@ -27,7 +27,7 @@ function uploadImageToS3(bucketName, file) {
 
 export const createPost = async (req, res) => {
   try {
-    const { userId, description, category, city, mobileNumber, whatsappNumber, price, title, verify,plane } = req.body;
+    const { userId,bodyType,negotiable, brand,model,trimEdition,yearOfManufacture,mileage,engineCapacity,fuelType,transmission,description, city, mobileNumber, whatsappNumber, price, title, verify,plane } = req.body;
 
     // Create an array of image objects
     const images = req.files.map(file => ({
@@ -45,9 +45,9 @@ export const createPost = async (req, res) => {
       price,
       images, // Assign the array of images
       description,
-      category,
       socialIcon: ["heart"],
-      verify
+      verify,
+      bodyType,negotiable, brand,model,trimEdition,yearOfManufacture,mileage,engineCapacity,fuelType,transmission
     });
 
     const savedPost = await postDB.save();
@@ -139,7 +139,7 @@ export const getPost = async (req, res) => {
 export const editPost = async (req, res) => {
   try {
     const postId = req.params.postId; // Assuming postId is passed in the URL parameters
-    const { description, category,city,mobileNumber,whatsappNumber,price,title ,verify,plane} = req.body;
+    const { description,bodyType,negotiable, brand,model,trimEdition,yearOfManufacture,mileage,engineCapacity,fuelType,transmission,city,mobileNumber,whatsappNumber,price,title ,verify,plane} = req.body;
     // Check if the post exists
    const existingPost = await Post.findOne({ postId });
     if (!existingPost) {
@@ -155,7 +155,17 @@ export const editPost = async (req, res) => {
     existingPost.whatsappNumber = whatsappNumber;
     existingPost.price = price;
     existingPost.title = title;
-    existingPost.verify = verify
+    existingPost.verify = verify;
+    bodyType.bodyType= bodyType;
+    negotiable.negotiable= negotiable;
+    brand.brand=brand;
+    model.model = model;
+    trimEdition.trimEdition=trimEdition;
+    yearOfManufacture.yearOfManufacture= yearOfManufacture;
+    mileage.mileage = mileage;
+    engineCapacity.engineCapacity= engineCapacity;
+    fuelType.fuelType= fuelType;
+    transmission.transmission = transmission
 
     // Save the updated post
     const updatedPost = await existingPost.save();
