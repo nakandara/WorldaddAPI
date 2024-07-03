@@ -147,7 +147,6 @@ export const deleteUser = async (req, res) => {
 export const forgotPassword = async (req, res) => {
   const email = req.body.email;
   const oldUser = await User.findOne({ email });
-  console.log(oldUser,'vvvvvvvvv');
 
   if (!oldUser) {
     return res.status(404).send("User not found");
@@ -156,7 +155,7 @@ export const forgotPassword = async (req, res) => {
   const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
     expiresIn: "5m",
   });
-  const link = `https://worldadd-api.vercel.app/api/reset-password/${oldUser._id}/${token}`;
+  const link = `${process.env.API_URL}/api/reset-password/${oldUser._id}/${token}`;
 
   // Save the updated user object back to the database
 
@@ -184,36 +183,24 @@ export const forgotPassword = async (req, res) => {
 export const resetGetPassword = async (req, res) => {
   const { id, token } = req.params;
 
-  console.log(id,token,'reset-passwordreset-passwordreset-password');
+  const oldUser = await User.findOne({ _id: id });
+  if (!oldUser) {
+    return res.json({ status: "User Not Exists!!" });
+  }
 
-  console.log("Received request for reset password:", { id, token });
-
+  const secret = process.env.JWT_SECRET;
   try {
-    const oldUser = await User.findOne({ _id: id });
-    if (!oldUser) {
-      console.error("User not found:", id);
-      return res.status(404).json({ status: "User Not Exists!!" });
-    }
+    const verify = jwt.verify(token, secret);
+    const locals = {
+      email: verify.email,
+      status: "Not Verified",
+      WEBSITE_URL: `${process.env.WEBSITE_URL}/home`,
+    };
 
-    const secret = process.env.JWT_SECRET;
-    try {
-      const verify = jwt.verify(token, secret);
-      console.log(verify,'verifyverify');
-      const locals = {
-        email: verify.email,
-        status: "Not Verified",
-        WEBSITE_URL: `${process.env.WEBSITE_URL}/home`,
-      };
-
-      console.log("Token verified successfully:", verify);
-      res.render("index", locals);
-    } catch (error) {
-      console.error("Token verification failed:", error);
-      res.status(400).send("Token verification failed");
-    }
+    console.log(verify, "555555555555");
+    res.render("index", locals);
   } catch (error) {
-    console.error("Error in resetGetPassword:", error);
-    res.status(500).json({ status: "Something went wrong", error: error.message });
+    res.send("Not Verified");
   }
 };
 
