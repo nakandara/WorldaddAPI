@@ -147,6 +147,7 @@ export const deleteUser = async (req, res) => {
 export const forgotPassword = async (req, res) => {
   const email = req.body.email;
   const oldUser = await User.findOne({ email });
+  console.log(oldUser,'vvvvvvvvv');
 
   if (!oldUser) {
     return res.status(404).send("User not found");
@@ -183,24 +184,36 @@ export const forgotPassword = async (req, res) => {
 export const resetGetPassword = async (req, res) => {
   const { id, token } = req.params;
 
-  const oldUser = await User.findOne({ _id: id });
-  if (!oldUser) {
-    return res.json({ status: "User Not Exists!!" });
-  }
+  console.log(id,token,'reset-passwordreset-passwordreset-password');
 
-  const secret = process.env.JWT_SECRET;
+  console.log("Received request for reset password:", { id, token });
+
   try {
-    const verify = jwt.verify(token, secret);
-    const locals = {
-      email: verify.email,
-      status: "Not Verified",
-      WEBSITE_URL: `${process.env.WEBSITE_URL}/home`,
-    };
+    const oldUser = await User.findOne({ _id: id });
+    if (!oldUser) {
+      console.error("User not found:", id);
+      return res.status(404).json({ status: "User Not Exists!!" });
+    }
 
-    console.log(verify, "555555555555");
-    res.render("index", locals);
+    const secret = process.env.JWT_SECRET;
+    try {
+      const verify = jwt.verify(token, secret);
+      console.log(verify,'verifyverify');
+      const locals = {
+        email: verify.email,
+        status: "Not Verified",
+        WEBSITE_URL: `${process.env.WEBSITE_URL}/home`,
+      };
+
+      console.log("Token verified successfully:", verify);
+      res.render("index", locals);
+    } catch (error) {
+      console.error("Token verification failed:", error);
+      res.status(400).send("Token verification failed");
+    }
   } catch (error) {
-    res.send("Not Verified");
+    console.error("Error in resetGetPassword:", error);
+    res.status(500).json({ status: "Something went wrong", error: error.message });
   }
 };
 
