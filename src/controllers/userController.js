@@ -155,7 +155,7 @@ export const forgotPassword = async (req, res) => {
   const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, secret, {
     expiresIn: "5m",
   });
-  const link = `${process.env.API_URL}/api/reset-password/${oldUser._id}/${token}`;
+  const link = `https://worldadd-api.vercel.app/api/reset-password/${oldUser._id}/${token}`;
 
   // Save the updated user object back to the database
 
