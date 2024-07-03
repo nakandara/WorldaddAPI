@@ -12,7 +12,10 @@
             "src": "/(.*)",
             "dest": "src/index.js"
         }
-    ]
+    ],
+    "static": {
+      "directory": "views"
+    }
   }
   
   
