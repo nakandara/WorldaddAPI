@@ -97,4 +97,8 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/view', (req, res) => {
+  res.render('index', { data: 'Some data' });
+});
+
 export default app;
