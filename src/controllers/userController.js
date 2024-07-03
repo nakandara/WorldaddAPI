@@ -158,10 +158,15 @@ export const forgotPassword = async (req, res) => {
   const link = `${process.env.API_URL}/api/reset-password/${oldUser._id}/${token}`;
 
   const mailOptions = {
-    from: "your.email@gmail.com",
+    from: "quickadshub@gmail.com",
     to: email,
     subject: "Password Reset Request",
-    text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\nPlease click on the following link, or paste this into your browser to complete the process:\n\n${link}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`,
+    html: `
+      <p>You are receiving this email because you (or someone else) have requested the reset of the password for your account.</p>
+      <p>Please click on the following button to complete the process:</p>
+      <a href="${link}" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 5px;">Reset Password</a>
+      <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
+    `,
   };
 
   transporter.sendMail(mailOptions, (err, info) => {
