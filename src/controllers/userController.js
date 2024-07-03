@@ -157,17 +157,11 @@ export const forgotPassword = async (req, res) => {
   });
   const link = `${process.env.API_URL}/api/reset-password/${oldUser._id}/${token}`;
 
-  // Save the updated user object back to the database
-
   const mailOptions = {
     from: "your.email@gmail.com",
     to: email,
     subject: "Password Reset Request",
-    text:
-      `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n` +
-      `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
-      `${link}\n\n` +
-      `If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+    text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\nPlease click on the following link, or paste this into your browser to complete the process:\n\n${link}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`,
   };
 
   transporter.sendMail(mailOptions, (err, info) => {

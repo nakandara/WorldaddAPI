@@ -1,11 +1,12 @@
 import dotenv from 'dotenv';
-dotenv.config();
-
 import express from 'express';
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import User from './models/userModel.js';
+import session from 'express-session';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import UserRoutes from './routes/userRoutes.js';
 import profilePhotoRoutes from './routes/profilePhotoRoutes.js';
 import contactRoutes from './routes/contactRoute.js';
@@ -14,19 +15,28 @@ import postRoutes from './routes/postRoutes.js';
 import otpRouter from './routes/otpRouter.js';
 import authRoute from './routes/authRoute.js';
 import { connectToProjectDatabase } from './database/projectdb.js';
-import session from 'express-session';
 import { authenticateJWT } from './common/passport.js';
+
+dotenv.config();
 
 const app = express();
 
+// Get the directory name in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Set the view engine to ejs
 app.set('view engine', 'ejs');
+// Set the path to the views directory
+app.set('views', path.join(__dirname, 'views'));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(cors());
 app.use(
   session({
     secret: 'your-secret-key',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
   })
 );
 
@@ -71,7 +81,6 @@ async function startServer() {
 
 startServer();
 
-
 app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authenticateJWT);
 app.use('/api', UserRoutes);
@@ -82,15 +91,10 @@ app.use('/api', postRoutes);
 app.use('/api', otpRouter);
 app.use('/auth', authRoute);
 
-
-
-
 app.get('/', (req, res) => {
   res.json({
     message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
   });
 });
-
-
 
 export default app;
