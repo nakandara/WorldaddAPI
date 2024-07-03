@@ -17,18 +17,20 @@ import { connectToProjectDatabase } from './database/projectdb.js';
 import session from 'express-session';
 import { authenticateJWT } from './common/passport.js';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
 
 // Create __dirname for ES Module
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Set the view engine to EJS and the views directory
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, '../views'));  // Adjust the path as needed
 
 // Serve static files from the public directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(express.json({ limit: '10mb' }));
 app.use(cors());
