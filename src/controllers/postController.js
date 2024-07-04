@@ -28,7 +28,7 @@ function uploadImageToS3(bucketName, file) {
 export const createPost = async (req, res) => {
   try {
     const { userId,bodyType,negotiable, category,brand,model,trimEdition,yearOfManufacture,mileage,engineCapacity,fuelType,transmission,description, city, mobileNumber, whatsappNumber, price, title, verify,plane } = req.body;
-
+console.log(category,'trteeeeeeeeeee');
     // Create an array of image objects
     const images = req.files.map(file => ({
       imageUrl: file.location
@@ -38,7 +38,7 @@ export const createPost = async (req, res) => {
     const postDB = new Post({
       userId,
       plane,
-      category,
+      category:[category],
       city,
       title,
       mobileNumber,
@@ -98,6 +98,7 @@ export const getVerifyAllPosts = async (req, res) => {
   try {
     // Find posts where verify is true
     const posts = await Post.find({ verify: true }).sort({ createdAt: -1 });;
+    console.log();
     
     if (!posts || posts.length === 0) {
       return res.status(404).json({ success: false, message: 'No verified posts found' });

@@ -25,7 +25,7 @@ const postSchema = new mongoose.Schema({
     fuelType: { type: String, enum: ['Petrol', 'Diesel', 'Electric', 'Hybrid'], required: true },
     transmission: { type: String, enum: ['Manual', 'Automatic', 'Semi-Automatic'], required: true },
     bodyType: { type: String, enum: ['Sedan', 'Hatchback', 'SUV', 'Coupe', 'Convertible', 'Wagon', 'Van', 'Truck'], required: true },
-    category:{ type: String, required: false },
+    category:[{ type: String, required: true }],
     images: [imageSchema], // Array of objects with imageUrl field
     negotiable: { type: Boolean, default: false },
     description: { type: String, required: false },
