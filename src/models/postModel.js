@@ -16,16 +16,16 @@ const postSchema = new mongoose.Schema({
     },
 
 
-    brand: { type: String, required: true },
-    model: { type: String, required: true },
+    brand: { type: String, required: false },
+    model: { type: String, required: false },
     trimEdition: { type: String },
-    yearOfManufacture: { type: String, required: true },
-    mileage: { type: String, required: true },
-    engineCapacity: { type: String, required: true },
+    yearOfManufacture: { type: String, required: false },
+    mileage: { type: String, required: false },
+    engineCapacity: { type: String, required: false },
     fuelType: { type: String, enum: ['Petrol', 'Diesel', 'Electric', 'Hybrid'], required: true },
     transmission: { type: String, enum: ['Manual', 'Automatic', 'Semi-Automatic'], required: true },
-    bodyType: { type: String, required: true },
-    category:[{ type: String, required: true }],
+    bodyType: { type: String, required: false },
+    category:[{ type: String, required: false }],
     images: [imageSchema], // Array of objects with imageUrl field
     negotiable: { type: Boolean, default: false },
     description: { type: String, required: false },
