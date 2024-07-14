@@ -60,7 +60,7 @@ export const getProfile = async (req, res) => {
     if (!profile) {
       return res
         .status(200)
-        .json({ success: true,message:"profile not found" });
+        .json({ success: false,message:"profile not found" });
     }
 
     res.status(200).json({ success: true, profile });
