@@ -4,6 +4,7 @@
 import Post from "../models/postModel.js";
 import AWS from "aws-sdk";
 import fs from "fs";
+import Save from "../models/saved.js";
 const s3 = new AWS.S3();
 
 function uploadImageToS3(bucketName, file) {
@@ -28,7 +29,7 @@ function uploadImageToS3(bucketName, file) {
 export const createPost = async (req, res) => {
   try {
     const { userId,bodyType,negotiable, category,brand,model,trimEdition,yearOfManufacture,mileage,engineCapacity,fuelType,transmission,description, city, mobileNumber, whatsappNumber, price, title, verify,plane } = req.body;
-console.log(category,'trteeeeeeeeeee');
+
     // Create an array of image objects
     const images = req.files.map(file => ({
       imageUrl: file.location
@@ -51,7 +52,17 @@ console.log(category,'trteeeeeeeeeee');
       bodyType,negotiable, brand,model,trimEdition,yearOfManufacture,mileage,engineCapacity,fuelType,transmission
     });
 
+
+
     const savedPost = await postDB.save();
+    const newSave = new Save({
+      name: title, // You can adjust the name field as needed
+      userId:userId,
+      postId: postDB.postId,
+      isSaved: false
+    });
+    console.log(newSave,'666666666666666');
+    await newSave.save();
     // Sending response
     res.status(200).json({ success: true, message: "Post created Successfully", post: savedPost });
 

@@ -10,6 +10,8 @@ import { fileURLToPath } from 'url';
 import UserRoutes from './routes/userRoutes.js';
 import profilePhotoRoutes from './routes/profilePhotoRoutes.js';
 import contactRoutes from './routes/contactRoute.js';
+import saveRoutes from './routes/saveRoutes.js';
+
 import profileRoutes from './routes/profileRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 import otpRouter from './routes/otpRouter.js';
@@ -89,6 +91,7 @@ app.use('/api', profileRoutes);
 app.use('/api', contactRoutes);
 app.use('/api', postRoutes);
 app.use('/api', otpRouter);
+app.use('/api', saveRoutes);
 app.use('/auth', authRoute);
 
 app.get('/', (req, res) => {
