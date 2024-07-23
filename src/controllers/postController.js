@@ -28,49 +28,55 @@ function uploadImageToS3(bucketName, file) {
 
 export const createPost = async (req, res) => {
   try {
-    const { userId,bodyType,negotiable, category,brand,model,trimEdition,yearOfManufacture,mileage,engineCapacity,fuelType,transmission,description, city, mobileNumber, whatsappNumber, price, title, verify,plane } = req.body;
+    const { userId, bodyType, negotiable, category, brand, model, trimEdition, yearOfManufacture, mileage, engineCapacity, fuelType, transmission, description, city, mobileNumber, whatsappNumber, price, title, verify, plane, image } = req.body;
 
-    // Create an array of image objects
-    const images = req.files.map(file => ({
-      imageUrl: file.location
-    }));
+    // Map image URLs to an array of objects with imageUrl field
+    const images = image.map(url => ({ imageUrl: url }));
 
     // Create a single Post object with all images
     const postDB = new Post({
       userId,
       plane,
-      category:[category],
+      category: [category],
       city,
       title,
       mobileNumber,
       whatsappNumber,
       price,
-      images, // Assign the array of images
+      images, // Assign the array of image objects
       description,
       socialIcon: ["heart"],
       verify,
-      bodyType,negotiable, brand,model,trimEdition,yearOfManufacture,mileage,engineCapacity,fuelType,transmission
+      bodyType,
+      negotiable,
+      brand,
+      model,
+      trimEdition,
+      yearOfManufacture,
+      mileage,
+      engineCapacity,
+      fuelType,
+      transmission
     });
-
-
 
     const savedPost = await postDB.save();
     const newSave = new Save({
       name: title, // You can adjust the name field as needed
-      userId:userId,
+      userId,
       postId: postDB.postId,
       isSaved: false
     });
-    console.log(newSave,'666666666666666');
+
     await newSave.save();
     // Sending response
-    res.status(200).json({ success: true, message: "Post created Successfully", post: savedPost });
+    res.status(200).json({ success: true, message: "Post created successfully", post: savedPost });
 
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 export const getPosts = async (req, res) => {
   const { userId } = req.params;
