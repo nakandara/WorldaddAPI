@@ -25,13 +25,39 @@ function uploadImageToS3(bucketName, file) {
     });
   });
 }
-
 export const createPost = async (req, res) => {
   try {
-    const { userId, bodyType, negotiable, category, brand, model, trimEdition, yearOfManufacture, mileage, engineCapacity, fuelType, transmission, description, city, mobileNumber, whatsappNumber, price, title, verify, plane, image } = req.body;
+    const {
+      userId,
+      bodyType,
+      negotiable,
+      category,
+      brand,
+      model,
+      trimEdition,
+      yearOfManufacture,
+      mileage,
+      engineCapacity,
+      fuelType,
+      transmission,
+      description,
+      city,
+      mobileNumber,
+      whatsappNumber,
+      price,
+      title,
+      verify,
+      plane,
+      image
+    } = req.body;
+
+    console.log(req.body); // Log the entire request body
+
+    // Convert image to an array if it's not already an array
+    const images = Array.isArray(image) ? image : [image];
 
     // Map image URLs to an array of objects with imageUrl field
-    const images = image.map(url => ({ imageUrl: url }));
+    const imageObjects = images.map(url => ({ imageUrl: url }));
 
     // Create a single Post object with all images
     const postDB = new Post({
@@ -43,7 +69,7 @@ export const createPost = async (req, res) => {
       mobileNumber,
       whatsappNumber,
       price,
-      images, // Assign the array of image objects
+      images: imageObjects, // Assign the array of image objects
       description,
       socialIcon: ["heart"],
       verify,
@@ -60,14 +86,16 @@ export const createPost = async (req, res) => {
     });
 
     const savedPost = await postDB.save();
+
     const newSave = new Save({
       name: title, // You can adjust the name field as needed
       userId,
-      postId: postDB.postId,
+      postId: postDB._id,
       isSaved: false
     });
 
     await newSave.save();
+
     // Sending response
     res.status(200).json({ success: true, message: "Post created successfully", post: savedPost });
 
@@ -76,7 +104,6 @@ export const createPost = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
 
 export const getPosts = async (req, res) => {
   const { userId } = req.params;
