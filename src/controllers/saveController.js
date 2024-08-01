@@ -26,14 +26,27 @@ export const savePost = async (req, res) => {
 
 export const getSaveById = async (req, res) => {
   const { userId } = req.params;
+  console.log(userId,'userIduserId');
 
   try {
-    const savedPosts = await Save.find({ userId, isSaved: true });
-    res.status(200).json({ success: true, savedPosts });
+    const savedPosts = await Save.find({ userId, isSaved: true }).populate('postId');
+
+    console.log(savedPosts, 'savedPostssavedPosts');
+
+    // Extract postIds from savedPosts
+    const postIds = savedPosts.map(post => post.postId);
+
+    // Fetch all related Post data
+    const relatedPosts = await Post.find({ postId: { $in: postIds } });
+
+    console.log(relatedPosts, 'relatedPosts');
+
+    res.status(200).json({ success: true, relatedPosts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
-  }}
+  }
+}
 
 // Get all Save documents
 export const getAllSaves = async (req, res) => {
