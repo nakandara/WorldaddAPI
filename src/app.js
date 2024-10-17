@@ -84,7 +84,7 @@ async function startServer() {
 startServer();
 
 app.use(express.urlencoded({ extended: true }));
-app.use('/api/auth', authenticateJWT);
+//app.use('/api/auth', authenticateJWT);
 app.use('/api', UserRoutes);
 app.use('/api', profilePhotoRoutes);
 app.use('/api', profileRoutes);
