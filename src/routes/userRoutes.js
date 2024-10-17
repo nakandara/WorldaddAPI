@@ -5,7 +5,7 @@ import { registerUser ,getUser,updateUsers,getUserById,resetGetPassword,deleteUs
 const router = express.Router();
 
 
-router.post('/createUser', registerUser);
+router.post('/auth/register', registerUser);
 router.get('/auth/getUser', getUser);
 router.get('/auth/getUserById/:user_id', getUserById);
 router.post('/auth/login', loginUser);
