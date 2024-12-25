@@ -1,30 +1,6 @@
-
-
-
 import Post from "../models/postModel.js";
-import AWS from "aws-sdk";
-import fs from "fs";
 import Save from "../models/saved.js";
-const s3 = new AWS.S3();
 
-function uploadImageToS3(bucketName, file) {
-  const params = {
-    Bucket: "world-api-demo",
-    Key: file.originalname,
-    Body: fs.createReadStream(file.path),
-    ContentType: file.mimetype,
-  };
-
-  return new Promise((resolve, reject) => {
-    s3.upload(params, (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(data.Location);
-      }
-    });
-  });
-}
 export const createPost = async (req, res) => {
   try {
     const {
@@ -57,7 +33,7 @@ export const createPost = async (req, res) => {
     const images = Array.isArray(image) ? image : [image];
 
     // Map image URLs to an array of objects with imageUrl field
-    const imageObjects = images.map(url => ({ imageUrl: url }));
+    const imageObjects = images.map((url) => ({ imageUrl: url }));
 
     // Create a single Post object with all images
     const postDB = new Post({
@@ -97,8 +73,11 @@ export const createPost = async (req, res) => {
     await newSave.save();
 
     // Sending response
-    res.status(200).json({ success: true, message: "Post created successfully", post: savedPost });
-
+    res.status(200).json({
+      success: true,
+      message: "Post created successfully",
+      post: savedPost,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
