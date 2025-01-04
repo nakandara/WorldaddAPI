@@ -12,12 +12,17 @@ export const createProfile = async (req, res) => {
     username,
     birthday,
     gender,
-    district,
     city,
-    height,
-    weight,
+    email,
+    state,
+    address,
     country,
-    OtherDetails,
+    isVerified,
+    zipCode,
+    status,
+    phoneNumber,
+    avatarUrl,
+   
   } = req.body;
 
   console.log(userId, "userId");
@@ -34,12 +39,17 @@ export const createProfile = async (req, res) => {
       username,
       birthday,
       gender,
-      district,
       city,
-      height,
-      weight,
+      email,
+      state,
+      status,
+      phoneNumber,
+      avatarUrl,
+      zipCode,
+      isVerified,
+      address,
       country,
-      OtherDetails,
+      
     });
     console.log(ProfileDB);
     await ProfileDB.save();
@@ -83,12 +93,19 @@ export const updateProfile = async (req, res) => {
     }
 
     existingProfile.username = req.body.username;
+    existingProfile.email = req.body.email;
     existingProfile.city = req.body.city;
-    existingProfile.district = req.body.district;
     existingProfile.race = req.body.race;
     existingProfile.gender = req.body.gender;
     existingProfile.religion = req.body.religion;
-
+    existingProfile.state = req.body.state;
+    existingProfile.avatarUrl = req.body.avatarUrl;
+    existingProfile.address = req.body.address;
+    existingProfile.zipCode = req.body.zipCode;
+    existingProfile.phoneNumber = req.body.phoneNumber;
+    existingProfile.country = req.body.country;
+    existingProfile.isVerified = req.body.isVerified;
+    existingProfile.status = req.body.status;
     await existingProfile.save();
 
     res

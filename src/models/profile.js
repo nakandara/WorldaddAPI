@@ -5,13 +5,18 @@ const profileSchema = new mongoose.Schema({
     username: { type: String, required: true },
     birthday: { type: Date, required: false},
     gender: { type: String, required: false },
-   
-    district: { type: String, required: false},
+    phoneNumber: { type: String, required: false },
     city: { type: String, required: false},
-    height: { type: Number, required: false },
-    weight: { type: Number, required: false },
+    country:{ type: String, required: false},
+    state: { type: String, required: false},
+    email:{ type: String, required: false},
+    address:{ type: String, required: false},
     country: { type: String, required: false },
-    OtherDetails: { type: String, required: false },
+    avatarUrl: { type: String, required: false },
+    phoneNumber:  { type: String, required: false },
+    zipCode: { type: String, required: false },
+    isVerified:{ type: Boolean, required: false },
+    status: { type: String, required: false },
 });
 
 const Profile = mongoose.model("Profile", profileSchema);
