@@ -26,7 +26,7 @@ const app = express();
 const server = http.createServer(app); 
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: '*', 
     methods: ['GET', 'POST'],
   },
 });
@@ -85,7 +85,7 @@ io.on('connection', (socket) => {
   console.log('A user connected:', socket.id);
 
   // Send a message to the connected client
-  socket.emit('backend_message', 'Hello from the backend nnn!');
+  socket.emit('backend_message', 'Hello from the backend!');
 
   // Broadcast to all connected clients
   socket.on('send_message', (data) => {
@@ -104,7 +104,6 @@ io.on('connection', (socket) => {
   });
 });
 
-
 // Database connection and server start
 async function startServer() {
   try {
@@ -118,7 +117,6 @@ async function startServer() {
 startServer();
 
 app.use(express.urlencoded({ extended: true }));
-// app.use('/api/auth', authenticateJWT);
 app.use('/api', UserRoutes);
 app.use('/api', profilePhotoRoutes);
 app.use('/api', profileRoutes);
@@ -138,4 +136,7 @@ app.get('/view', (req, res) => {
   res.render('index', { data: 'Some data' });
 });
 
-export default app;
+// ❌ DO NOT start the server in app.js
+// ❌ DO NOT define the PORT in app.js
+
+export { app, server };

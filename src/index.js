@@ -1,14 +1,11 @@
-import app from './app.js';
-import fs from 'fs'
-import https from 'https'
-
-const port = process.env.PORT || 8080;
+import { app, server } from './app.js';
 
 
+const PORT = process.env.PORT || 8080;
 
-// Using ES6 arrow function to start the server and log a message
-app.listen(port, () => {
-  console.log(`Listening : http://localhost:${port}`);
+// Start the server in index.js
+server.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
 
 
