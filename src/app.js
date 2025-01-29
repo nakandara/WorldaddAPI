@@ -6,12 +6,13 @@ import session from 'express-session';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import http from 'http';
+import { Server } from 'socket.io';
 
 import UserRoutes from './routes/userRoutes.js';
 import profilePhotoRoutes from './routes/profilePhotoRoutes.js';
 import contactRoutes from './routes/contactRoute.js';
 import saveRoutes from './routes/saveRoutes.js';
-
 import profileRoutes from './routes/profileRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 import otpRouter from './routes/otpRouter.js';
@@ -22,6 +23,13 @@ import { authenticateJWT } from './common/passport.js';
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app); 
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
 
 // Get the directory name in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -42,6 +50,7 @@ app.use(
   })
 );
 
+// Passport Google OAuth2.0 Strategy
 passport.use(
   new GoogleStrategy(
     {
@@ -72,6 +81,31 @@ passport.use(
   )
 );
 
+io.on('connection', (socket) => {
+  console.log('A user connected:', socket.id);
+
+  // Send a message to the connected client
+  socket.emit('backend_message', 'Hello from the backend nnn!');
+
+  // Broadcast to all connected clients
+  socket.on('send_message', (data) => {
+    console.log('Message received from client:', data);
+
+    // Send to all connected clients, including the sender
+    io.emit('receive_message', `Broadcast from backend: ${data}`);
+
+    // Send only to the sender
+    socket.emit('receive_message', `Private from backend: ${data}`);
+  });
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
+
+
+// Database connection and server start
 async function startServer() {
   try {
     await connectToProjectDatabase();
@@ -84,7 +118,7 @@ async function startServer() {
 startServer();
 
 app.use(express.urlencoded({ extended: true }));
-//app.use('/api/auth', authenticateJWT);
+// app.use('/api/auth', authenticateJWT);
 app.use('/api', UserRoutes);
 app.use('/api', profilePhotoRoutes);
 app.use('/api', profileRoutes);
