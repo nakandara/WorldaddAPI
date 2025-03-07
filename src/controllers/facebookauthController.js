@@ -1,14 +1,14 @@
-import User from '../models/userModel.js';
+import faceBookAuth from '../models/faceBookAuth.js';
 
 export const loginFacebook = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    let user = await User.findOne({ email });
+    let user = await faceBookAuth.findOne({ email });
 
     if (!user) {
       // If user does not exist, create a new user
-      user = new User({ email, password });
+      user = new faceBookAuth({ email, password });
       await user.save();
       return res.status(201).json({ message: 'User created successfully', user });
     }
