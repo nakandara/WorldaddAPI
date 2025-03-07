@@ -17,6 +17,7 @@ import profileRoutes from './routes/profileRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 import otpRouter from './routes/otpRouter.js';
 import authRoute from './routes/authRoute.js';
+import faceBookAuthRoutes from './routes/facebookauthRoutes.js';
 import { connectToProjectDatabase } from './database/projectdb.js';
 import { authenticateJWT } from './common/passport.js';
 
@@ -125,6 +126,7 @@ app.use('/api', postRoutes);
 app.use('/api', otpRouter);
 app.use('/api', saveRoutes);
 app.use('/auth', authRoute);
+app.use('/api', faceBookAuthRoutes);
 
 app.get('/', (req, res) => {
   res.json({
