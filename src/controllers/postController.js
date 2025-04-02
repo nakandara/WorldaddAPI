@@ -24,6 +24,8 @@ export const createPost = async (req, res) => {
       title,
       verify,
       plane,
+      tags,
+      condition,
       image
     } = req.body;
 
@@ -57,6 +59,8 @@ export const createPost = async (req, res) => {
       yearOfManufacture,
       mileage,
       engineCapacity,
+      condition,
+      tags,
       fuelType,
       transmission
     });
@@ -88,15 +92,25 @@ export const getPosts = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    Post.find({ userId })
-      .then((data) => {
-        res.json(data);
-      })
-      .catch((error) => {
-        res.status(408).json({ error });
-      });
+    // Option 1: Find one post by userId
+    const post = await Post.findOne({ userId });
+    
+    // Option 2: Find all posts by userId (if user can have multiple posts)
+    // const posts = await Post.find({ userId });
+    
+    console.log(userId, 'Searching for userId:', userId);
+    
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found for this user' });
+    }
+
+    res.json(post);
+    
+    // If using Option 2 (find all posts):
+    // res.json(posts);
   } catch (error) {
-    res.json({ error });
+    console.error('Error fetching post:', error);
+    res.status(500).json({ error: 'Failed to fetch post' });
   }
 };
 
@@ -121,7 +135,7 @@ export const getVerifyAllPosts = async (req, res) => {
   try {
     // Find posts where verify is true
     const posts = await Post.find({ verify: true }).sort({ createdAt: -1 });;
-    console.log();
+
     
     if (!posts || posts.length === 0) {
       return res.status(404).json({ success: false, message: 'No verified posts found' });
@@ -164,9 +178,9 @@ export const getPost = async (req, res) => {
 export const editPost = async (req, res) => {
   try {
     const postId = req.params.postId; // Assuming postId is passed in the URL parameters
-    const { description, bodyType, category, negotiable, brand, model, trimEdition, yearOfManufacture, mileage, engineCapacity, fuelType, transmission, city, mobileNumber, whatsappNumber, price, title, verify, plane } = req.body;
+    const { description, bodyType,tags, category, negotiable, brand, model, trimEdition, yearOfManufacture, mileage, condition,engineCapacity, fuelType, transmission, city, mobileNumber, whatsappNumber, price, title, verify, plane } = req.body;
 
-    // Check if the post exists
+ 
     const existingPost = await Post.findOne({ postId });
     if (!existingPost) {
       return res.status(404).json({ success: false, message: "Post not found" });
@@ -179,6 +193,7 @@ export const editPost = async (req, res) => {
     existingPost.city = city || existingPost.city;
     existingPost.mobileNumber = mobileNumber || existingPost.mobileNumber;
     existingPost.whatsappNumber = whatsappNumber || existingPost.whatsappNumber;
+    existingPost.condition = condition || existingPost.condition;
     existingPost.price = price || existingPost.price;
     existingPost.title = title || existingPost.title;
     existingPost.verify = verify !== undefined ? verify : existingPost.verify;
@@ -192,6 +207,7 @@ export const editPost = async (req, res) => {
     existingPost.engineCapacity = engineCapacity || existingPost.engineCapacity;
     existingPost.fuelType = fuelType || existingPost.fuelType;
     existingPost.transmission = transmission || existingPost.transmission;
+    existingPost.tags = tags || existingPost.tags;
 
     // Save the updated post
     const updatedPost = await existingPost.save();

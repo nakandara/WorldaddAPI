@@ -14,18 +14,16 @@ const postSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-
-
     brand: { type: String, required: false },
     model: { type: String, required: false },
     trimEdition: { type: String },
     yearOfManufacture: { type: String, required: false },
     mileage: { type: String, required: false },
     engineCapacity: { type: String, required: false },
-    fuelType: { type: String, enum: ['Petrol', 'Diesel', 'Electric', 'Hybrid'], required: true },
-    transmission: { type: String, enum: ['Manual', 'Automatic', 'Semi-Automatic'], required: true },
+    fuelType: { type: [String], enum: ['Petrol', 'Diesel', 'Electric', 'Hybrid'], required: true },
+    transmission: { type: [String], enum: ['Manual', 'Automatic', 'Semi-Automatic'], required: true },
     bodyType: { type: String, required: false },
-    category:[{ type: String, required: false }],
+    category: [{ type: String, required: false }],
     images: [imageSchema], // Array of objects with imageUrl field
     negotiable: { type: Boolean, default: false },
     description: { type: String, required: false },
@@ -36,8 +34,10 @@ const postSchema = new mongoose.Schema({
     whatsappNumber: { type: String, required: true },
     price: { type: String, required: true },
     socialIcon: [{ type: String, required: true }],
-    verify: { type: Boolean, default: false } // Boolean field for verification status
-}, { timestamps: true }); // Add timestamps option
+    verify: { type: Boolean, default: false },
+    condition: { type: String, enum: ['New', 'Used', 'Recondition'], required: true },
+    tags: { type: [String], default: [] } // Add this line for tags array
+}, { timestamps: true });
 
 const Post = mongoose.model("Post", postSchema);
 
