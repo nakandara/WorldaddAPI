@@ -92,27 +92,22 @@ export const getPosts = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    // Option 1: Find one post by userId
-    const post = await Post.findOne({ userId });
-    
-    // Option 2: Find all posts by userId (if user can have multiple posts)
-    // const posts = await Post.find({ userId });
-    
-    console.log(userId, 'Searching for userId:', userId);
-    
-    if (!post) {
-      return res.status(404).json({ error: 'Post not found for this user' });
+    // Find all posts by userId (since user can have multiple posts)
+    const posts = await Post.find({ userId });
+
+    console.log(userId, 'Searching for posts by userId:', userId);
+
+    if (posts.length === 0) {
+      return res.status(404).json({ error: 'No posts found for this user' });
     }
 
-    res.json(post);
-    
-    // If using Option 2 (find all posts):
-    // res.json(posts);
+    res.json(posts);  // Return all matching posts
   } catch (error) {
-    console.error('Error fetching post:', error);
-    res.status(500).json({ error: 'Failed to fetch post' });
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Failed to fetch posts' });
   }
 };
+
 
 export const getAllPosts = async (req, res) => {
   try {
